@@ -1,0 +1,21 @@
+
+<ul class="nav nav-pills mb-3">  
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'dashboard' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">Dashboard</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'givehelp' %} active{% endif %}" href="{% url 'myapp:givehelp' %}">Give Help</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'classrooms' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">PMF</a>
+    </li>
+    {% comment %}
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'subjects' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">Give Help</a>
+    </li>
+    {% endcomment %}
+    <li class="nav-item">
+      <a class="nav-link{% if active == 'assignments' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">Receive Help</a>
+    </li>
+  </ul>
+  <hr>

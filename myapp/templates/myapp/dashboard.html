@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}<br>
+{% include 'myapp/_header.html' with active='dashboard' %}
+<h1>Dashboard</h1>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-header">
+      Status
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">ID: <strong>{{user.username}}</strong></li>
+      <li class="list-group-item">Total Give Help: <strong>{{user.total_give_help}}</strong></li>
+      <li class="list-group-item">Total PMF: <strong>{{user.total_pmf}}</strong></li>
+      <li class="list-group-item">Total Received Help: <strong>{{user.total_received_help}}</strong></li>
+    </ul>
+  </div>
+{% endblock %}
+
+

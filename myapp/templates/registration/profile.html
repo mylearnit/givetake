@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<div class="row">
+    <div class="col-md-8">
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    <input type="hidden" name="user" value="{{user.id}}">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Full Name</label>
+        <input value="{{user.first_name}}" name="first_name" placeholder="Full Name" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input value="{{user.email}}" name="email" placeholder="Email" class="form-control">
+      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">User Name</label>
+      <input name="username" placeholder="Username" class="form-control" readonly value="{{user.username}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+  </form>
+</div></div>
+
+{% endblock %}

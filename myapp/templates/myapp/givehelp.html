@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}<br>
+{% include 'myapp/_header.html' with active='givehelp' %}
+<h1>Give Help</h1>
+
+<div class="row">
+    {% for ancestor in ancestors %}
+    <div class="col-sm-4">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">#{{ancestor.user.username}} {{ancestor.user.first_name}}</h5>
+          <p class="card-text">Give Help Amount: 0</p>
+          <p class="card-text">Status: Paid</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,102 @@
+{% load static %}<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Give and Take{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/5.1/dist/css/bootstrap.min.css">
+    <!-- <link href="{% static 'sidebar.css' %}" rel="stylesheet"> -->
+    <style>
+
+        .btn-toggle {
+        display: inline-flex;
+        align-items: center;
+        padding: .25rem .5rem;
+        font-weight: 600;
+        color: rgba(0, 0, 0, .65);
+        background-color: transparent;
+        border: 0;
+        }
+        .btn-toggle:hover,
+        .btn-toggle:focus {
+        color: rgba(0, 0, 0, .85);
+        }
+
+        .btn-toggle::before {
+        width: 1.25em;
+        line-height: 0;
+        content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+        transition: transform .35s ease;
+        transform-origin: .5em 50%;
+        }
+
+        .btn-toggle[aria-expanded="true"] {
+        color: rgba(0, 0, 0, .85);
+        }
+        .btn-toggle[aria-expanded="true"]::before {
+        transform: rotate(90deg);
+        }
+
+        .btn-toggle-nav a {
+        display: inline-flex;
+        padding: .1875rem .5rem;
+        margin-top: .125rem;
+        margin-left: 1.25rem;
+        text-decoration: none;
+        }
+
+
+
+        ul.children {
+            padding-left: 12px;
+            width: auto;
+        }
+    </style>
+    {% block css %}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="container">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light shadow bg-white rounded">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="font-size: 2em; color:cornflowerblue" href="{% url 'home' %}"><strong>GIVE AND TAKE</strong></a>
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav navbar-nav-scroll ml-auto">
+              <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" 
+                aria-expanded="false" style="font-size: 1.2em; color:cornflowerblue">
+                  #{{user.username}} {{user.first_name}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
+                
+                  <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+              </li>
+            </ul>
+            {% endif %}
+        </div>
+        </nav>
+
+      {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+      {% block content %}
+
+      
+      {% endblock %}
+      
+    
+    </div>
+    <script src="https://getbootstrap.com/docs/5.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block js %}
+    {% endblock %}
+  </body>
+</html>
