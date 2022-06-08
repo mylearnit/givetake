@@ -1,20 +1,13 @@
-
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+import uuid
 from django.views import View
-
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from django.db.models import Max
+
 from myapp.forms import User
-
 from myapp.models import BinaryTree
-
-
-from django.contrib.auth.mixins import UserPassesTestMixin
-
 
 class SuperAdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
@@ -47,7 +40,7 @@ class Home(SuperAdminRequiredMixin,View):
                     messages.error(request,  'Error: Already has 2 child.')
                 else:
                     user = User.objects.create_user(
-                        username = User.objects.aggregate(m=Max('id'))['m'] + 1, # just a temporary username
+                        username = str(uuid.uuid4()), # just a temporary username
                         password = '123456',
                         first_name = request.POST.get('name')
                     )
@@ -64,10 +57,21 @@ class Home(SuperAdminRequiredMixin,View):
             messages.error(request, 'Error: Parent and Name is required.')
         return redirect(f"{reverse('adminapp:home')}")
 
-
-
-
 class UserView(SuperAdminRequiredMixin,View):
-    def get(self, request, username):
-        ancestors = BinaryTree.objects.get(pk=username).get_ancestors()[:10]
-        return render(request,'adminapp/user.html',{'sel_user':User.objects.get(username=username),'ancestors':ancestors})
+    
+    
+    def post(self,request, username):
+        """Change payment status"""
+        User = get_user_model()
+        
+        # from_user = User.objects.get(username = request.POST.get('from_user'))
+        to_user = User.objects.get(username = request.POST.get('paid_to'))
+        payment_status = request.POST.get('payment_status')
+        if payment_status=='paid':
+            BinaryTree.objects.get(id=username).is_paid.add(to_user)
+        else:
+            BinaryTree.objects.get(id=username).is_paid.remove(to_user)
+        messages.success(request, 'Success: Changed payment status.')
+        return redirect(f"{reverse('myapp:givehelp', kwargs={'username': username})}")
+
+        

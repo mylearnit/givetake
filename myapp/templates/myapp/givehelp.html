@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+
+{% load mytags %}
+
 {% block content %}<br>
 {% include 'myapp/_header.html' with active='givehelp' %}
 <h1>Give Help</h1>
@@ -9,8 +12,12 @@
       <div class="card mb-2">
         <div class="card-body">
           <h5 class="card-title">#{{ancestor.user.username}} {{ancestor.user.first_name}}</h5>
-          <p class="card-text">Give Help Amount: 0</p>
-          <p class="card-text">Status: Paid</p>
+          <p class="card-text">Give Help Amount: ₹{{ amts|index:forloop.counter0 }}.00</p>
+          <p class="card-text">Status: {% if ancestor.user in payment_done_users %}Paid{% else %} Un Paid {%endif%}</p>
+          {%if  ancestor.user == next_payment_user %}
+            <!-- whether this user is the next payment need to be done -->
+            Pay now
+          {% endif %}
         </div>
       </div>
     </div>

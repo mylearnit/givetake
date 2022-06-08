@@ -16,6 +16,7 @@ from django.contrib.auth import login
 from .forms import SignUpForm
 User = get_user_model()
 
+GIVE_AMOUNTS = [150,200,400,600,800,1000,2000,3000,4000,5000]
 
 class SignUpView(CreateView):
     model = User
@@ -45,9 +46,33 @@ class Dashboard(View):
 
 @method_decorator([login_required], name='dispatch')
 class GiveHelp(View):
-    def get(self, request):
-        ancestors = BinaryTree.objects.get(pk=request.user.username).get_ancestors()[:10]
-        return render(request,'myapp/givehelp.html',{'ancestors':ancestors})
+    def get(self, request, username=None):
+        template = 'adminapp/user.html'
+        if not username:
+            # if not admin user
+            template = 'myapp/givehelp.html'
+            username = request.user.username
+        
+        mynode = BinaryTree.objects.get(pk=username)
+        # get last 10 ancestors and reverse it
+        ancestors = mynode.get_ancestors()[:10][::-1]
+        payment_done_users = mynode.is_paid.all()
+
+        # find next payment user
+        next_payment_user = None
+        for ancestor in ancestors:
+            if ancestor.user not in payment_done_users:
+                next_payment_user = ancestor.user
+                break
+
+        return render(request,template,{
+            # i think sel_user is only required for admin user
+            'sel_user':User.objects.get(username=username),
+            'ancestors':ancestors,
+            'payment_done_users':payment_done_users,
+            'next_payment_user':next_payment_user,
+            'amts':GIVE_AMOUNTS
+            })
 
 @method_decorator([login_required], name='dispatch')
 class Profile(View):

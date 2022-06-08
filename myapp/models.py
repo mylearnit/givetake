@@ -12,4 +12,4 @@ class BinaryTree(MP_Node):
     user = models.ForeignKey('User', on_delete=models.CASCADE, null=True)
     
     amount = models.IntegerField(default=0)
-    is_paid = models.BooleanField(default = False)
+    is_paid = models.ManyToManyField('User', related_name='+') # models.BooleanField(default = False)
