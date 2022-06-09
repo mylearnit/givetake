@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from .views import Dashboard, GiveHelp
+from .views import Dashboard, GiveHelp, ReceiveHelp
 app_name='myapp'
 
 urlpatterns = [
@@ -8,4 +8,7 @@ urlpatterns = [
 	path('givehelp/', GiveHelp.as_view(), name='givehelp'),
 	# admin view for a user
 	path('givehelp/<int:username>/', GiveHelp.as_view(), name='givehelp'),
+	
+	path('receivehelp/', ReceiveHelp.as_view(), name='receivehelp'),
+	
 ]

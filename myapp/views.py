@@ -43,6 +43,23 @@ class Dashboard(View):
     def get(self, request):
         return render(request,'myapp/dashboard.html')
 
+@method_decorator([login_required], name='dispatch')
+class ReceiveHelp(View):
+    def get(self, request):
+        # find stages of tree
+        stage = int(request.GET.get('stage',1))
+        
+        mynode = BinaryTree.objects.get(pk=request.user.username)
+        descendants = mynode.get_descendants()
+        stage_nodes = []
+        for descendant in descendants:
+            if descendant.depth == mynode.depth+stage:
+                stage_nodes.append(descendant)
+        return render(request,'myapp/receivehelp.html',{
+            'stage_nodes':stage_nodes,
+            'stage':stage,
+            'amts':GIVE_AMOUNTS
+            })
 
 @method_decorator([login_required], name='dispatch')
 class GiveHelp(View):
@@ -64,7 +81,9 @@ class GiveHelp(View):
             if ancestor.user not in payment_done_users:
                 next_payment_user = ancestor.user
                 break
-
+        
+        # if nusra pay sumesh, then sumee and sofi profile page will show nusra
+        
         return render(request,template,{
             # i think sel_user is only required for admin user
             'sel_user':User.objects.get(username=username),

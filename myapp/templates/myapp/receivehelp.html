@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load mytags %}
+
+{% block content %}<br>
+{% include 'myapp/_header.html' with active='receivehelp' %}
+<h3>Receive Help</h3>
+<!-- 
+<p class="lead">Stage:</p> -->
+<form class="mb-4">
+<select name="stage">
+    {% for i in '..........' %}
+    <option value="{{forloop.counter}}" {% if stage == forloop.counter %}selected{%endif%}>
+        Stage {{forloop.counter}}</option>
+    {% endfor %}
+</select>
+<button class="btn btn-primary btn-sm">Show</button>
+</form>
+
+<div class="row">
+    {% for node in stage_nodes %}
+    
+    <div class="col-sm-4">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">#{{node.user.username}} {{node.user.first_name}}</h5>
+          <p class="card-text">
+              Receive Help Amount: 
+              {% with stageindex=stage|add:"-1" %}
+              ₹{{amts|index:stageindex}}.00
+              {% endwith %}
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+

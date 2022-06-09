@@ -58,8 +58,6 @@ class Home(SuperAdminRequiredMixin,View):
         return redirect(f"{reverse('adminapp:home')}")
 
 class UserView(SuperAdminRequiredMixin,View):
-    
-    
     def post(self,request, username):
         """Change payment status"""
         User = get_user_model()
