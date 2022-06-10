@@ -12,4 +12,13 @@ class User(AbstractUser):
 
 class BinaryTree(MP_Node):
     user = models.ForeignKey('User', on_delete=models.CASCADE, null=True)
-    is_paid = models.ManyToManyField('User', related_name='+')
+    payment = models.ManyToManyField('User', related_name='+', through='PaymentDetails') 
+
+
+
+class PaymentDetails(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    binarytree = models.ForeignKey('BinaryTree', on_delete=models.CASCADE)
+    is_paid=models.BooleanField(default=False)
+    amount = models.IntegerField(default=0)
+    payment_done_requested = models.BooleanField(default=False)

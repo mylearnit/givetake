@@ -67,7 +67,7 @@ class GiveHelp(View):
         # get last 10 ancestors and reverse it
         ancestors = mynode.get_ancestors()[::-1][:10]
         print(ancestors)
-        payment_done_users = mynode.is_paid.all()
+        payment_done_users = mynode.payment.all()
         # what if there is less than 10 ancestors
         filtered_ancestors = []
         for ancestor in ancestors:
@@ -93,8 +93,7 @@ class GiveHelp(View):
         try:
             unpaid_node = ancestors[-1]
             above_node = unpaid_node.get_ancestors()[::-1][:10][len(ancestors)-1]
-            print(above_node.user.first_name)
-            payment_done_users = unpaid_node.is_paid.all()
+            payment_done_users = unpaid_node.payment.all()
             if above_node.user in payment_done_users:
                 is_last_ancestor_paid = True
             else:
