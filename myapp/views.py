@@ -63,6 +63,21 @@ class ReceiveHelp(View):
 
 @method_decorator([login_required], name='dispatch')
 class GiveHelp(View):
+    def givehelp_ancestors(self, mynode):
+        # get last 10 ancestors and reverse it
+        ancestors = mynode.get_ancestors()[::-1][:10]
+        print(ancestors)
+        payment_done_users = mynode.is_paid.all()
+        # what if there is less than 10 ancestors
+        filtered_ancestors = []
+        for ancestor in ancestors:
+            
+            filtered_ancestors.append(ancestor)
+            if ancestor.user not in payment_done_users:
+                break
+            
+        return filtered_ancestors
+
     def get(self, request, username=None):
         template = 'adminapp/user.html'
         if not username:
@@ -71,25 +86,27 @@ class GiveHelp(View):
             username = request.user.username
         
         mynode = BinaryTree.objects.get(pk=username)
-        # get last 10 ancestors and reverse it
-        ancestors = mynode.get_ancestors()[:10][::-1]
-        payment_done_users = mynode.is_paid.all()
+        ancestors = self.givehelp_ancestors(mynode)
+        
+        # if nusra pay arun, then sumee and other profile page will show nusra
+        
+        try:
+            unpaid_node = ancestors[-1]
+            above_node = unpaid_node.get_ancestors()[::-1][:10][len(ancestors)-1]
+            print(above_node.user.first_name)
+            payment_done_users = unpaid_node.is_paid.all()
+            if above_node.user in payment_done_users:
+                is_last_ancestor_paid = True
+            else:
+                is_last_ancestor_paid = False
+        except IndexError:
+            is_last_ancestor_paid = True
 
-        # find next payment user
-        next_payment_user = None
-        for ancestor in ancestors:
-            if ancestor.user not in payment_done_users:
-                next_payment_user = ancestor.user
-                break
-        
-        # if nusra pay sumesh, then sumee and sofi profile page will show nusra
-        
         return render(request,template,{
             # i think sel_user is only required for admin user
+            'is_last_ancestor_paid':is_last_ancestor_paid,
             'sel_user':User.objects.get(username=username),
             'ancestors':ancestors,
-            'payment_done_users':payment_done_users,
-            'next_payment_user':next_payment_user,
             'amts':GIVE_AMOUNTS
             })
 
@@ -102,18 +119,6 @@ class Profile(View):
     def post(self,request):
         # user_id=request.POST['user']
         user = request.user #User.objects.get(id = user_id)
-        """
-        username = request.POST.get('username', '')
-        if len(username) < 3:
-            messages.error(request, 'Error: Username must have atleast 3 characters.')
-            return redirect('profile')
-
-        if username != user.username:
-            if get_user_model().objects.filter(username=username).exists():
-                messages.error(request, 'Error: Username already exists.')
-                return redirect('profile')
-            user.username = username    
-        """
         
         user.first_name = request.POST.get('first_name','')
         # user.last_name = request.POST.get('last_name', '')
