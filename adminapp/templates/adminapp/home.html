@@ -91,14 +91,27 @@
     </div>
     <div class="modal-body">
         
-        <div class="mb-3">
-          <label for="message-text" class="col-form-label">Parent:</label>
-          <input class="form-control" id="parent-id" name="parent_id">
-        </div>
-        <div class="mb-3">
-            <label for="message-text" class="col-form-label">User's Name:</label>
-            <input class="form-control" id="cat-name" name="name">
-        </div>
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">Parent:</label>
+        <input type="number" class="form-control" id="parent-id" name="parent_id" required>
+      </div>
+      <div class="mb-3">
+          <label for="message-text" class="col-form-label">User Name:</label>
+          <input class="form-control" id="cat-name" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">User Mobile:</label>
+        <input class="form-control" id="cat-mobile" name="mobile" required>
+      </div>
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">User Google Pay:</label>
+        <input class="form-control" id="cat-gpay" name="gpay" required>
+      </div>
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">User Email:</label>
+        <input class="form-control" id="cat-email" name="email">
+      </div>
+  
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

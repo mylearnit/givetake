@@ -7,9 +7,9 @@ class User(AbstractUser):
     total_give_help = models.FloatField(default=0)
     total_pmf = models.FloatField(default=0)
     total_received_help = models.FloatField(default=0)
+    mobile = models.CharField(max_length=20, blank=True)
+    gpay = models.CharField(max_length=200, blank=True)
 
 class BinaryTree(MP_Node):
     user = models.ForeignKey('User', on_delete=models.CASCADE, null=True)
-    
-    amount = models.IntegerField(default=0)
-    is_paid = models.ManyToManyField('User', related_name='+') # models.BooleanField(default = False)
+    is_paid = models.ManyToManyField('User', related_name='+')

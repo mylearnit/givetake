@@ -12,11 +12,22 @@
       <div class="card mb-2">
         <div class="card-body">
           <h5 class="card-title">#{{ancestor.user.username}} {{ancestor.user.first_name}}</h5>
+          <p class="card-text">Mobile: {{ancestor.user.mobile}}</p>
+          <p class="card-text">Email: {{ancestor.user.email}}</p>
+          
           <p class="card-text">Give Help Amount: ₹{{ amts|index:forloop.counter0 }}.00</p>
           <p class="card-text">Status: {% if ancestor.user in payment_done_users %}Paid{% else %} Un Paid {%endif%}</p>
-          {%if  ancestor.user == next_payment_user %}
+          {% if ancestor.user == next_payment_user or ancestor.depth < 10 %}
             <!-- whether this user is the next payment need to be done -->
-            Pay now
+            {% if ancestor.user|payment_done:forloop.counter0 %}
+              <!-- if nusra pay sumesh, then sumee and sofi profile page will show nusra -->            
+              <p class="card-text">Google Pay: {{ancestor.user.gpay}}</p>
+              <div class="mb-3">
+                <label for="formFile" class="form-label">Default file input example</label>
+                <input class="form-control" type="file" id="formFile">
+              </div>
+              <button class="btn btn-sm btn-primary btn-block">Upload Google Pay Screenshot</button>
+            {% endif %}
           {% endif %}
         </div>
       </div>
