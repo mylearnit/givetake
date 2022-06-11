@@ -6,8 +6,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 
-from myapp.forms import User
-from myapp.models import BinaryTree
+
+from myapp.models import BinaryTree, PaymentDetails
 User = get_user_model()
 
 class SuperAdminRequiredMixin(UserPassesTestMixin):
@@ -76,9 +76,8 @@ class UserView(SuperAdminRequiredMixin,View):
         to_user = User.objects.get(username = request.POST.get('paid_to'))
         payment_status = request.POST.get('payment_status')
         if payment_status=='paid':
-            BinaryTree.objects.get(id=username).is_paid.add(to_user)
-        else:
-            BinaryTree.objects.get(id=username).is_paid.remove(to_user)
+            node = BinaryTree.objects.get(id=username)
+            PaymentDetails.objects.create(user = to_user,binarytree=node, is_paid=True)
         messages.success(request, 'Success: Changed payment status.')
         return redirect(f"{reverse('myapp:givehelp', kwargs={'username': username})}")
 
