@@ -16,7 +16,7 @@
           <p class="card-text">Email: {{ancestor.user.email}}</p>
           
           <p class="card-text">Give Help Amount: ₹{{ amts|index:forloop.counter0 }}.00</p>
-          <p class="card-text">Status: {% if forloop.last %}Un Paid {% else %}Paid{% endif %}</p>
+          <p class="card-text">Status: {% if forloop.last and is_last_ancestor_paid == False %}Un Paid {% else %}Paid{% endif %}</p>
           {% if forloop.last and is_last_ancestor_paid %}
             
               <!-- if nusra pay sumesh, then sumee and sofi profile page will show nusra -->            

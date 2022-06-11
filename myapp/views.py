@@ -91,6 +91,7 @@ class GiveHelp(View):
         # if nusra pay arun, then sumee and other profile page will show nusra
         
         try:
+            # i didn't understand this code
             unpaid_node = ancestors[-1]
             above_node = unpaid_node.get_ancestors()[::-1][:10][len(ancestors)-1]
             print(above_node.user.first_name)

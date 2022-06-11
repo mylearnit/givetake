@@ -15,8 +15,7 @@
           <p class="card-text">Google Pay: {{ancestor.user.gpay}}</p>
 
           <p class="card-text">Give Help Amount: ₹{{ amts|index:forloop.counter0 }}.00</p>
-          <p class="card-text">Status: {% if forloop.last %}Un Paid {% else %}Paid{% endif %}
-            </p>
+          <p class="card-text">Status: {% if forloop.last and not is_last_ancestor_paid %}Un Paid {% else %}Paid{% endif %}</p>
           {% if forloop.last %}
             <form method="post" action="{% url 'adminapp:user' sel_user.username%}">{% csrf_token %}
               <input type="hidden" name="paid_to" value="{{ancestor.user.username}}">
