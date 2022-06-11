@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% load mytags %}
 
-{% block content %}<br>
+{% block extra_nav %}
 {% include 'myapp/_header.html' with active='receivehelp' %}
+{% endblock %}
+
+{% block content %}<br>
+
 <h3>Receive Help</h3>
 <!-- 
 <p class="lead">Stage:</p> -->

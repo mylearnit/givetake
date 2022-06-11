@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block content %}<br>
+
+{% block extra_nav %}
 {% include 'myapp/_header.html' with active='dashboard' %}
+{% endblock %}
+
+{% block content %}<br>
+
 <h3>Dashboard</h3>
 
 <div class="card" style="width: 18rem;">

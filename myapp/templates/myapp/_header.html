@@ -1,17 +1,14 @@
 
-<ul class="nav nav-pills mb-3">  
-    <li class="nav-item">
-      <a class="nav-link{% if active == 'dashboard' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">Dashboard</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link{% if active == 'givehelp' %} active{% endif %}" href="{% url 'myapp:givehelp' %}">Give Help</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link{% if active == 'receivehelp' %} active{% endif %}" href="{% url 'myapp:receivehelp' %}">Receive Help</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link{% if active == 'classrooms' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">PMF</a>
-    </li>
+<li class="nav-item">
+  <a class="nav-link{% if active == 'dashboard' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">Dashboard</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link{% if active == 'givehelp' %} active{% endif %}" href="{% url 'myapp:givehelp' %}">Give Help</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link{% if active == 'receivehelp' %} active{% endif %}" href="{% url 'myapp:receivehelp' %}">Receive Help</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link{% if active == 'classrooms' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">PMF</a>
+</li>
     
-  </ul>
-  <hr>

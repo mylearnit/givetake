@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block extra_nav %}
+{% include 'myapp/_header.html' with active='dashboard' %}
+{% endblock %}
+
 {% block content %}
 <br><br>
 <div class="row">

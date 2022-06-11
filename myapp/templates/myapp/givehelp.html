@@ -2,8 +2,12 @@
 
 {% load mytags %}
 
-{% block content %}<br>
+{% block extra_nav %}
 {% include 'myapp/_header.html' with active='givehelp' %}
+{% endblock %}
+
+{% block content %}<br>
+
 <h3>Give Help</h3>
 
 <div class="row">
