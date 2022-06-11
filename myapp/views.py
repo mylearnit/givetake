@@ -8,7 +8,7 @@ from django.views import View
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from myapp.models import BinaryTree
+from myapp.models import BinaryTree, PaymentDetails
 
 from django.forms import ModelForm
 from django.views.generic import CreateView
@@ -66,49 +66,68 @@ class GiveHelp(View):
     def givehelp_ancestors(self, mynode):
         # get last 10 ancestors and reverse it
         ancestors = mynode.get_ancestors()[::-1][:10]
-        print(ancestors)
-        payment_done_users = mynode.payment.all()
+        payment_done_users = [payment.user for payment in PaymentDetails.objects.filter(binarytree=mynode,is_paid=True)] # mynode.payment.all()
         # what if there is less than 10 ancestors
         filtered_ancestors = []
         for ancestor in ancestors:
-            
             filtered_ancestors.append(ancestor)
             if ancestor.user not in payment_done_users:
                 break
             
         return filtered_ancestors
 
+    def get_last_ancestor_paid(self, ancestors):
+        # last node is maybe unpaid node, every other ancestor is paid
+        unpaid_node = ancestors[-1]
+        payment_done_users = [payment.user for payment in PaymentDetails.objects.filter(binarytree=unpaid_node,is_paid=True)] # unpaid_node.payment.all()
+
+        unpaid_node_ancestors = unpaid_node.get_ancestors()[::-1][:10]
+
+        
+        if len(ancestors) <= len(unpaid_node_ancestors):
+            print(len(ancestors), len(unpaid_node_ancestors))
+            # last node is the unpaidnode_ancestor
+            above_node= unpaid_node_ancestors[len(ancestors)-1]
+            if above_node.user in payment_done_users:
+                return True
+            else:
+                return False
+        else:
+            # i didn't think about it much
+            print('index:', len(ancestors)-1, unpaid_node, unpaid_node_ancestors, payment_done_users)
+            # check root node in payment_done_users
+            print(BinaryTree.get_first_root_node().user, payment_done_users)
+            if BinaryTree.get_first_root_node().user in payment_done_users:
+                return True
+            return False
+
     def get(self, request, username=None):
-        template = 'adminapp/user.html'
-        if not username:
-            # if not admin user
+        
+        context = {'amts': GIVE_AMOUNTS}
+        if username:
+            # if admin user
+            template = 'adminapp/user.html'
+            context['sel_user'] = User.objects.get(username=username)
+            is_admin=True
+        else:
             template = 'myapp/givehelp.html'
             username = request.user.username
-        
+            is_admin=False
+            
+
         mynode = BinaryTree.objects.get(pk=username)
         ancestors = self.givehelp_ancestors(mynode)
         
-        # if nusra pay arun, then sumee and other profile page will show nusra
-        
-        try:
-            # i didn't understand this code
-            unpaid_node = ancestors[-1]
-            above_node = unpaid_node.get_ancestors()[::-1][:10][len(ancestors)-1]
-            payment_done_users = unpaid_node.payment.all()
-            if above_node.user in payment_done_users:
-                is_last_ancestor_paid = True
-            else:
-                is_last_ancestor_paid = False
-        except IndexError:
-            is_last_ancestor_paid = True
-
-        return render(request,template,{
-            # i think sel_user is only required for admin user
-            'is_last_ancestor_paid':is_last_ancestor_paid,
-            'sel_user':User.objects.get(username=username),
-            'ancestors':ancestors,
-            'amts':GIVE_AMOUNTS
-            })
+        if not is_admin:
+            # if not admin user
+            is_last_ancestor_paid = True # for root node there is no ancestors
+            if len(ancestors)>0:
+                # if nusra pay arun, then sumee and other profile page will show nusra
+                is_last_ancestor_paid = self.get_last_ancestor_paid(ancestors)
+            context['is_last_ancestor_paid']= is_last_ancestor_paid
+            print(is_last_ancestor_paid)
+        context['ancestors'] = ancestors
+        return render(request,template,context)
 
 @method_decorator([login_required], name='dispatch')
 class Profile(View):

@@ -77,7 +77,8 @@ class UserView(SuperAdminRequiredMixin,View):
         payment_status = request.POST.get('payment_status')
         if payment_status=='paid':
             node = BinaryTree.objects.get(id=username)
-            PaymentDetails.objects.create(user = to_user,binarytree=node, is_paid=True)
+            PaymentDetails.objects.get_or_create(user = to_user,binarytree=node, 
+                defaults={'is_paid':True})
         messages.success(request, 'Success: Changed payment status.')
         return redirect(f"{reverse('myapp:givehelp', kwargs={'username': username})}")
 

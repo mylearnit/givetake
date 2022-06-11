@@ -534,7 +534,7 @@
         "depth": 1,
         "numchild": 1,
         "user": 2,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -544,7 +544,7 @@
         "depth": 2,
         "numchild": 1,
         "user": 3,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -554,7 +554,7 @@
         "depth": 3,
         "numchild": 1,
         "user": 4,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -564,7 +564,7 @@
         "depth": 4,
         "numchild": 1,
         "user": 5,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -574,7 +574,7 @@
         "depth": 5,
         "numchild": 1,
         "user": 6,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -584,7 +584,7 @@
         "depth": 6,
         "numchild": 1,
         "user": 7,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -594,7 +594,7 @@
         "depth": 7,
         "numchild": 1,
         "user": 8,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -604,7 +604,7 @@
         "depth": 8,
         "numchild": 1,
         "user": 9,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -614,7 +614,7 @@
         "depth": 9,
         "numchild": 1,
         "user": 10,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -624,7 +624,7 @@
         "depth": 10,
         "numchild": 1,
         "user": 11,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -634,7 +634,7 @@
         "depth": 11,
         "numchild": 1,
         "user": 12,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -644,7 +644,7 @@
         "depth": 12,
         "numchild": 1,
         "user": 13,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -654,7 +654,7 @@
         "depth": 13,
         "numchild": 1,
         "user": 14,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -664,7 +664,7 @@
         "depth": 14,
         "numchild": 1,
         "user": 15,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -674,7 +674,7 @@
         "depth": 15,
         "numchild": 1,
         "user": 16,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -684,7 +684,7 @@
         "depth": 16,
         "numchild": 1,
         "user": 17,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -694,7 +694,7 @@
         "depth": 17,
         "numchild": 1,
         "user": 18,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -704,7 +704,7 @@
         "depth": 18,
         "numchild": 2,
         "user": 19,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -714,7 +714,7 @@
         "depth": 19,
         "numchild": 1,
         "user": 20,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -724,7 +724,7 @@
         "depth": 19,
         "numchild": 1,
         "user": 21,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -734,7 +734,7 @@
         "depth": 20,
         "numchild": 1,
         "user": 22,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -744,7 +744,7 @@
         "depth": 20,
         "numchild": 0,
         "user": 23,
-        "is_paid": []
+        "payment": []
     }
 }, {
     "model": "myapp.binarytree",
@@ -754,6 +754,6 @@
         "depth": 21,
         "numchild": 0,
         "user": 24,
-        "is_paid": []
+        "payment": []
     }
 }]

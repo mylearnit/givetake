@@ -19,6 +19,8 @@ class BinaryTree(MP_Node):
 class PaymentDetails(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     binarytree = models.ForeignKey('BinaryTree', on_delete=models.CASCADE)
+    # marked by admin
     is_paid=models.BooleanField(default=False)
     amount = models.IntegerField(default=0)
+    # marked by customer
     payment_done_requested = models.BooleanField(default=False)
