@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% block extra_content %}
+{% endblock %}
+
+<!-- MODEL TO ADD A NODE -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <form method="post" action="{% url 'adminapp:home' %}"> {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="categoryModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">Parent:</label>
+        <input type="number" class="form-control" id="parent-id" name="parent_id" required>
+      </div>
+      <div class="mb-3">
+          <label for="message-text" class="col-form-label">User Name:</label>
+          <input class="form-control" id="cat-name" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">User Mobile:</label>
+        <input class="form-control" id="cat-mobile" name="mobile" required>
+      </div>
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">User Google Pay:</label>
+        <input class="form-control" id="cat-gpay" name="gpay" required>
+      </div>
+      <div class="mb-3">
+        <label for="message-text" class="col-form-label">User Email:</label>
+        <input class="form-control" id="cat-email" name="email">
+      </div>
+  
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+    </form>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+let categoryModal = document.getElementById('categoryModal')
+categoryModal.addEventListener('show.bs.modal', function (event) {
+    let parent = event.relatedTarget.getAttribute('data-bs-parent');
+    let parentid = event.relatedTarget.getAttribute('data-bs-parent-id');
+    let modalTitle = categoryModal.querySelector('.modal-title')
+    modalTitle.textContent = 'Add new user on ' + parent;
+
+    let modalBodyInputparent = categoryModal.querySelector('.modal-body input#parent-id');
+    modalBodyInputparent.value = parentid;
+
+    let modalBodyInput = categoryModal.querySelector('.modal-body input#cat-name');
+    modalBodyInput.value = "";
+    
+})
+</script>
+{% endblock %}

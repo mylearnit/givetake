@@ -1,0 +1,21 @@
+{% extends 'adminapp/base.html' %}
+{% block extra_content %}<br>
+<p class="lead">Payment Done Requests</p>
+
+<hr>
+<div class="row">
+    {% for payment in payments %}
+    <div class="col-sm-4">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title"> Paid by: #{{payment.binarytree.user.username}} {{payment.binarytree.user.first_name}}</h5>
+          <h5 class="card-title">Paid to: #{{payment.user.username}} {{payment.user.first_name}}</h5>
+          <a href="{% url 'adminapp:user' payment.binarytree.user.username %}" style="margin: 0">view</a>
+          
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

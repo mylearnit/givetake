@@ -22,13 +22,13 @@
 
 <div class="row">
     {% for node in stage_nodes %}
-    
     <div class="col-sm-4">
       <div class="card mb-2">
         <div class="card-body">
           <h5 class="card-title">#{{node.user.username}} {{node.user.first_name}}</h5>
           <p class="card-text">Mobile: {{node.user.mobile}}</p>
           <p class="card-text">Email: {{node.user.email}}</p>
+          <p class="card-text">Status: {% if node.user|paid_to_user:user %}Received Help{% else %}Not Received Help{% endif %}</p>
           <p class="card-text">
               Receive Help Amount: 
               {% with stageindex=stage|add:"-1" %}

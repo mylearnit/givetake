@@ -18,7 +18,7 @@
           <h5 class="card-title">#{{ancestor.user.username}} {{ancestor.user.first_name}}</h5>
           
           <p class="card-text">Give Help Amount: ₹{{ amts|index:forloop.counter0 }}.00</p>
-          <p class="card-text">Status: {% if forloop.last %}Un Paid {% else %}Paid{% endif %}</p>
+          <p class="card-text">Status: {% if user|paid_to:ancestor %}Paid{% else %}Un Paid{% endif %}</p>
           
           {% if forloop.last and is_last_ancestor_paid %}
             
@@ -27,12 +27,21 @@
               <p class="card-text">Email: {{ancestor.user.email}}</p>
                      
               <p class="card-text">Google Pay: {{ancestor.user.gpay}}</p>
-              <!-- <div class="mb-3">
-                <label for="formFile" class="form-label">Default file input example</label>
-                <input class="form-control" type="file" id="formFile">
-              </div>
-              <button class="btn btn-sm btn-primary btn-block">Upload Google Pay Screenshot</button> -->
-            
+              {% if user|paid_requested:ancestor %}
+              Payment Requested
+              {# <img src="{{user|get_screenshot:ancestor}}">ss #}
+              {% else %}
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="to_user" value="{{ancestor.user.username}}"/>
+                <!-- <div class="mb-3">
+                  <label for="formFile" class="form-label">Google Pay</label>
+                  <input class="form-control" type="file" id="formFile" name="screenshotfile">
+                </div> -->
+                <button class="btn btn-sm btn-primary btn-block">Payment Done</button>
+              </form>
+              {% endif %}
+              
           {% endif %}
         </div>
       </div>

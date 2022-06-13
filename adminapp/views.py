@@ -6,9 +6,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 
+from adminapp.givehelp_functions import GIVE_AMOUNTS, givehelp_ancestors
 
 from myapp.models import BinaryTree, PaymentDetails
 User = get_user_model()
+
 
 class SuperAdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
@@ -68,7 +70,22 @@ class Home(SuperAdminRequiredMixin,View):
             messages.error(request, 'Error: Parent, Name, Mobile and GPay is required.')
         return redirect(f"{reverse('adminapp:home')}")
 
+
+
+class PaymentDoneView(SuperAdminRequiredMixin,View):
+    def get(self,request):
+        return render(request,'adminapp/requests.html',{'payments': 
+            [payment for payment in PaymentDetails.objects.filter(is_paid=False, payment_done_requested=True).order_by('-id')]})
 class UserView(SuperAdminRequiredMixin,View):
+    def get(self,request, username):
+        mynode = BinaryTree.objects.get(pk=username)
+        ancestors = givehelp_ancestors(mynode)
+        return render(request,'adminapp/user.html',{
+            'amts': GIVE_AMOUNTS, 
+            'sel_user': User.objects.get(username=username),
+            'ancestors':ancestors
+            })
+
     def post(self,request, username):
         """Change payment status"""
         
@@ -77,9 +94,12 @@ class UserView(SuperAdminRequiredMixin,View):
         payment_status = request.POST.get('payment_status')
         if payment_status=='paid':
             node = BinaryTree.objects.get(id=username)
-            PaymentDetails.objects.get_or_create(user = to_user,binarytree=node, 
-                defaults={'is_paid':True})
+            PaymentDetails.objects.update_or_create(user = to_user,binarytree=node, 
+                defaults={'is_paid':True,'amount':request.POST.get('amount',0)})
+            node.user.total_give_help += int(request.POST.get('amount',0))
+            node.user.save()
+            to_user.total_received_help += int(request.POST.get('amount',0))
+            to_user.save()
         messages.success(request, 'Success: Changed payment status.')
-        return redirect(f"{reverse('myapp:givehelp', kwargs={'username': username})}")
+        return redirect(f"{reverse('adminapp:user', kwargs={'username': username})}")
 
-        

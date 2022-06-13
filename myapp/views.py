@@ -8,15 +8,20 @@ from django.views import View
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from myapp.models import BinaryTree, PaymentDetails
+from django.http import HttpResponseRedirect
 
 from django.forms import ModelForm
 from django.views.generic import CreateView
 from django.contrib.auth import login
+
+from myapp.models import BinaryTree, PaymentDetails
+from adminapp.views import givehelp_ancestors
+from adminapp.givehelp_functions import GIVE_AMOUNTS, givehelp_ancestors, get_ancestors_and_payments
+
 from .forms import SignUpForm
 User = get_user_model()
 
-GIVE_AMOUNTS = [150,200,400,600,800,1000,2000,3000,4000,5000]
+
 
 class SignUpView(CreateView):
     model = User
@@ -63,71 +68,52 @@ class ReceiveHelp(View):
 
 @method_decorator([login_required], name='dispatch')
 class GiveHelp(View):
-    def givehelp_ancestors(self, mynode):
-        # get last 10 ancestors and reverse it
-        ancestors = mynode.get_ancestors()[::-1][:10]
-        payment_done_users = [payment.user for payment in PaymentDetails.objects.filter(binarytree=mynode,is_paid=True)] # mynode.payment.all()
-        # what if there is less than 10 ancestors
-        filtered_ancestors = []
-        for ancestor in ancestors:
-            filtered_ancestors.append(ancestor)
-            if ancestor.user not in payment_done_users:
-                break
-            
-        return filtered_ancestors
+    def post(self, request):
+        node = BinaryTree.objects.get(id=request.user.username)
+        to_user = User.objects.get(username = request.POST.get('to_user'))
+        PaymentDetails.objects.get_or_create(
+            user = to_user,binarytree=node, 
+            defaults={'payment_done_requested':True, 'screenshotfile':request.FILES.get('screenshotfile',None)})
+        return redirect('myapp:givehelp') # HttpResponseRedirect(reverse('myapp.views.list'))
 
-    def get_last_ancestor_paid(self, ancestors):
+    def get_last_ancestor_paid(self, unpaid_node, no_of_ancestors):
         # last node is maybe unpaid node, every other ancestor is paid
-        unpaid_node = ancestors[-1]
-        payment_done_users = [payment.user for payment in PaymentDetails.objects.filter(binarytree=unpaid_node,is_paid=True)] # unpaid_node.payment.all()
-
-        unpaid_node_ancestors = unpaid_node.get_ancestors()[::-1][:10]
-
+        unpaid_node_ancestors, payment_done_users = get_ancestors_and_payments(unpaid_node)
         
-        if len(ancestors) <= len(unpaid_node_ancestors):
-            print(len(ancestors), len(unpaid_node_ancestors))
+        if no_of_ancestors <= len(unpaid_node_ancestors):
+            print(no_of_ancestors, len(unpaid_node_ancestors))
             # last node is the unpaidnode_ancestor
-            above_node= unpaid_node_ancestors[len(ancestors)-1]
+            above_node= unpaid_node_ancestors[no_of_ancestors-1]
             if above_node.user in payment_done_users:
                 return True
             else:
                 return False
         else:
             # i didn't think about it much
-            print('index:', len(ancestors)-1, unpaid_node, unpaid_node_ancestors, payment_done_users)
+            print('index:', no_of_ancestors-1, unpaid_node, unpaid_node_ancestors, payment_done_users)
             # check root node in payment_done_users
             print(BinaryTree.get_first_root_node().user, payment_done_users)
             if BinaryTree.get_first_root_node().user in payment_done_users:
                 return True
             return False
 
-    def get(self, request, username=None):
+    def get(self, request):
         
-        context = {'amts': GIVE_AMOUNTS}
-        if username:
-            # if admin user
-            template = 'adminapp/user.html'
-            context['sel_user'] = User.objects.get(username=username)
-            is_admin=True
-        else:
-            template = 'myapp/givehelp.html'
-            username = request.user.username
-            is_admin=False
-            
+        mynode = BinaryTree.objects.get(pk=request.user.username)
+        ancestors = givehelp_ancestors(mynode)
 
-        mynode = BinaryTree.objects.get(pk=username)
-        ancestors = self.givehelp_ancestors(mynode)
+        no_of_ancestors = len(ancestors)
+        is_last_ancestor_paid = True # for root node there is no ancestors
+        if no_of_ancestors>0:
+            # if nusra pay arun, then sumee and other profile page will show nusra
+            
+            is_last_ancestor_paid = self.get_last_ancestor_paid(ancestors[-1], no_of_ancestors)
         
-        if not is_admin:
-            # if not admin user
-            is_last_ancestor_paid = True # for root node there is no ancestors
-            if len(ancestors)>0:
-                # if nusra pay arun, then sumee and other profile page will show nusra
-                is_last_ancestor_paid = self.get_last_ancestor_paid(ancestors)
-            context['is_last_ancestor_paid']= is_last_ancestor_paid
-            print(is_last_ancestor_paid)
-        context['ancestors'] = ancestors
-        return render(request,template,context)
+        return render(request,'myapp/givehelp.html',{
+            'amts': GIVE_AMOUNTS, 
+            'is_last_ancestor_paid': is_last_ancestor_paid,
+            'ancestors':ancestors
+            })
 
 @method_decorator([login_required], name='dispatch')
 class Profile(View):

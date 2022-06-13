@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'adminapp/base.html' %}
 {% load mytags %}
-{% block content %}<br>
+{% block extra_content %}<br>
 <p class="lead">#{{sel_user.username}} {{sel_user.first_name}}</p>
 
 <hr>
@@ -15,11 +15,12 @@
           <p class="card-text">Google Pay: {{ancestor.user.gpay}}</p>
 
           <p class="card-text">Give Help Amount: ₹{{ amts|index:forloop.counter0 }}.00</p>
-          <p class="card-text">Status: {% if sel_user|not_paid_to:ancestor %}Un Paid {% else %}Paid{% endif %}</p>
+          <p class="card-text">Status: {% if sel_user|paid_to:ancestor %}Paid{% else %}Un Paid{% endif %}</p>
           
-            {% if sel_user|not_paid_to:ancestor %}
+            {% if not sel_user|paid_to:ancestor %}
             <form method="post" action="{% url 'adminapp:user' sel_user.username%}">{% csrf_token %}
               <input type="hidden" name="paid_to" value="{{ancestor.user.username}}">
+              <input type="hidden" name="amount" value="{{ amts|index:forloop.counter0 }}">
               <input type="hidden" name="payment_status" value="paid">
               <button class="btn btn-primary btn-sm">Change Status to Paid</button>
             </form>
