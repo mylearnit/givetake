@@ -37,7 +37,7 @@ class SignUpView(CreateView):
 
 def home(request):
     if request.user.is_superuser:
-        return redirect('adminapp:home')
+        return redirect('adminapp:paymentdone_requests')
         
     elif request.user.is_authenticated:
         return redirect('myapp:dashboard')

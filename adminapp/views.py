@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-
+from django.db.models import Q
 from adminapp.givehelp_functions import GIVE_AMOUNTS, givehelp_ancestors
 
 from myapp.models import BinaryTree, PaymentDetails
@@ -71,6 +71,14 @@ class Home(SuperAdminRequiredMixin,View):
         return redirect(f"{reverse('adminapp:home')}")
 
 
+
+
+class SearchView(SuperAdminRequiredMixin,View):
+    def get(self,request):
+        q=request.GET.get('search','')
+
+        return render(request,'adminapp/search.html',{
+            'users': User.objects.filter(Q(first_name__icontains=q)|Q(username=q)|Q(mobile=q))})
 
 class PaymentDoneView(SuperAdminRequiredMixin,View):
     def get(self,request):

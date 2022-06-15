@@ -1,16 +1,27 @@
+{% url 'myapp:dashboard' as dashboard %}
+{% url 'myapp:givehelp' as givehelp %}
+{% url 'myapp:receivehelp' as receivehelp %}
+{% url 'profile' as profile %}
+
 
 <li class="nav-item">
-  <a class="nav-link{% if active == 'dashboard' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">Dashboard</a>
+  <a class="nav-link{% if dashboard in request.path %} active{% endif %}" href="{{dashboard}}">Dashboard</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link{% if active == 'givehelp' %} active{% endif %}" href="{% url 'myapp:givehelp' %}">Give Help</a>
+  <a class="nav-link{% if givehelp in request.path %} active{% endif %}" href="{{givehelp}}">Give Help</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link{% if active == 'receivehelp' %} active{% endif %}" href="{% url 'myapp:receivehelp' %}">Receive Help</a>
+  <a class="nav-link{% if receivehelp in request.path %} active{% endif %}" href="{{receivehelp}}">Receive Help</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link{% if active == 'classrooms' %} active{% endif %}" href="{% url 'myapp:dashboard' %}">PMF</a>
+  <a class="nav-link" href="#">PMF</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="{% url 'profile' %}">#{{user.username}} {{user.first_name}}</a>
+  <a class="nav-link{% if profile in request.path %} active{% endif %}" href="{{profile}}">#{{user.username}} {{user.first_name}}</a>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+</li>
+
+
+  

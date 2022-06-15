@@ -4,3 +4,4 @@ django-crispy-forms
 
 python-decouple
 psycopg2
+Pillow

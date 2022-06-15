@@ -1,0 +1,16 @@
+
+{% url 'adminapp:paymentdone_requests' as payment_requests %}
+{% url 'adminapp:home' as tree %}
+<li class="nav-item">
+    <a class="nav-link{% if payment_requests in request.path %} active{% endif %}" href="{{payment_requests}}">Requests</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if tree in request.path %} active{% endif %}" href="{{tree}}">Tree</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="javascript:void(0)" data-bs-parent="a parent" data-bs-toggle="modal" 
+data-bs-target="#categoryModal">Add User</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+  </li>
