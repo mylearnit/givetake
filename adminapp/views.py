@@ -76,9 +76,9 @@ class Home(SuperAdminRequiredMixin,View):
 class SearchView(SuperAdminRequiredMixin,View):
     def get(self,request):
         q=request.GET.get('search','')
-
-        return render(request,'adminapp/search.html',{
-            'users': User.objects.filter(Q(first_name__icontains=q)|Q(username=q)|Q(mobile=q))})
+        users = []
+        if q:users = User.objects.filter(Q(first_name__icontains=q)|Q(username=q)|Q(mobile=q))
+        return render(request,'adminapp/search.html',{'users':users })
 
 class PaymentDoneView(SuperAdminRequiredMixin,View):
     def get(self,request):

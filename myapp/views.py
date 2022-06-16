@@ -77,6 +77,10 @@ class GiveHelp(View):
         return redirect('myapp:givehelp') # HttpResponseRedirect(reverse('myapp.views.list'))
 
     def get_last_ancestor_paid(self, unpaid_node, no_of_ancestors):
+        """
+        unpaid_node is the last ancestor with index eg 4(no_of_ancestors).
+        now this last ancestor will have ancestors, sometimes length 2
+        """
         # last node is maybe unpaid node, every other ancestor is paid
         unpaid_node_ancestors, payment_done_users = get_ancestors_and_payments(unpaid_node)
         
@@ -91,9 +95,13 @@ class GiveHelp(View):
         else:
             # i didn't think about it much
             print('index:', no_of_ancestors-1, unpaid_node, unpaid_node_ancestors, payment_done_users)
+            root_node = BinaryTree.get_first_root_node()
+            if unpaid_node == root_node:
+                # root node doesn't required to pay to any one.
+                return True
             # check root node in payment_done_users
-            print(BinaryTree.get_first_root_node().user, payment_done_users)
-            if BinaryTree.get_first_root_node().user in payment_done_users:
+            print(root_node.user, payment_done_users)
+            if root_node.user in payment_done_users:
                 return True
             return False
 
