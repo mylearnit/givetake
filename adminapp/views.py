@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
-from adminapp.givehelp_functions import GIVE_AMOUNTS, givehelp_ancestors
+from adminapp.givehelp_functions import GIVE_AMOUNTS,PMF, givehelp_ancestors
 
 from myapp.models import BinaryTree, PaymentDetails
 User = get_user_model()
@@ -90,6 +90,7 @@ class UserView(SuperAdminRequiredMixin,View):
         ancestors = givehelp_ancestors(mynode)
         return render(request,'adminapp/user.html',{
             'amts': GIVE_AMOUNTS, 
+            'pmfs': PMF,
             'sel_user': User.objects.get(username=username),
             'ancestors':ancestors
             })
@@ -100,13 +101,16 @@ class UserView(SuperAdminRequiredMixin,View):
         # from_user = User.objects.get(username = request.POST.get('from_user'))
         to_user = User.objects.get(username = request.POST.get('paid_to'))
         payment_status = request.POST.get('payment_status')
+        amt = int(request.POST.get('amount',0))
+        pmf = int(request.POST.get('pmf',0))
         if payment_status=='paid':
             node = BinaryTree.objects.get(id=username)
             PaymentDetails.objects.update_or_create(user = to_user,binarytree=node, 
-                defaults={'is_paid':True,'amount':request.POST.get('amount',0)})
-            node.user.total_give_help += int(request.POST.get('amount',0))
+                defaults={'is_paid':True,'amount':amt})
+            node.user.total_give_help += amt
+            node.user.total_pmf +=pmf
             node.user.save()
-            to_user.total_received_help += int(request.POST.get('amount',0))
+            to_user.total_received_help += amt
             to_user.save()
         messages.success(request, 'Success: Changed payment status.')
         return redirect(f"{reverse('adminapp:user', kwargs={'username': username})}")

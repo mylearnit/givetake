@@ -13,7 +13,7 @@
           <p class="card-text">Mobile: {{ancestor.user.mobile}}</p>
           <p class="card-text">Email: {{ancestor.user.email}}</p>
           <p class="card-text">Google Pay: {{ancestor.user.gpay}}</p>
-
+          <p class="card-text">PMF Amount: ₹{{ pmfs|index:forloop.counter0 }}.00</p>
           <p class="card-text">Give Help Amount: ₹{{ amts|index:forloop.counter0 }}.00</p>
           <p class="card-text">Status: {% if sel_user|paid_to:ancestor %}Paid{% else %}Un Paid{% endif %}</p>
           
@@ -21,6 +21,7 @@
             <form method="post" action="{% url 'adminapp:user' sel_user.username%}">{% csrf_token %}
               <input type="hidden" name="paid_to" value="{{ancestor.user.username}}">
               <input type="hidden" name="amount" value="{{ amts|index:forloop.counter0 }}">
+              <input type="hidden" name="pmf" value="{{ pmfs|index:forloop.counter0 }}">
               <input type="hidden" name="payment_status" value="paid">
               <button class="btn btn-primary btn-sm">Change Status to Paid</button>
             </form>

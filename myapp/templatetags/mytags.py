@@ -31,3 +31,8 @@ def get_screenshot(user, ancestor):
     if payment and payment.first().screenshotfile:
         return payment.screenshotfile.url
     return ''
+
+
+# @register.simple_tag
+# def define(val=None):
+#   return val

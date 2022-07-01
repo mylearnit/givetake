@@ -1,7 +1,7 @@
 from myapp.models import PaymentDetails
 
-GIVE_AMOUNTS = [150,200,400,600,800,1000,2000,3000,4000,5000]
-
+GIVE_AMOUNTS = [100,200,400,600,800,1000,2000,3000,4000,5000]
+PMF = [60,90,180,390,420,530,640,750,860,980]
 def get_ancestors_and_payments(mynode):
     # get last 10 ancestors and reverse it
     ancestors = mynode.get_ancestors()[::-1][:10]

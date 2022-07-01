@@ -16,7 +16,7 @@ from django.contrib.auth import login
 
 from myapp.models import BinaryTree, PaymentDetails
 from adminapp.views import givehelp_ancestors
-from adminapp.givehelp_functions import GIVE_AMOUNTS, givehelp_ancestors, get_ancestors_and_payments
+from adminapp.givehelp_functions import GIVE_AMOUNTS,PMF, givehelp_ancestors, get_ancestors_and_payments
 
 from .forms import SignUpForm
 User = get_user_model()
@@ -67,14 +67,46 @@ class ReceiveHelp(View):
             })
 
 @method_decorator([login_required], name='dispatch')
+class ReceiveHelpChart(View):
+    def get(self, request):
+        payments = PaymentDetails.objects.filter(binarytree_id=request.user.username,is_paid=True)
+
+        stages = []
+        stages_status = [] # how many persons paid in each stage
+        n = 2
+        for i in range(10):
+            stages.append(n)
+            n=n*2
+
+
+        return render(request,'myapp/receivehelp_chart.html',{'amts':GIVE_AMOUNTS, 'stages':stages})
+
+@method_decorator([login_required], name='dispatch')
 class GiveHelp(View):
     def post(self, request):
         node = BinaryTree.objects.get(id=request.user.username)
         to_user = User.objects.get(username = request.POST.get('to_user'))
-        PaymentDetails.objects.get_or_create(
-            user = to_user,binarytree=node, 
-            defaults={'payment_done_requested':True, 'screenshotfile':request.FILES.get('screenshotfile',None)})
+        payment, _ = PaymentDetails.objects.get_or_create(
+            user = to_user,binarytree=node)
+        payment.payment_done_requested = True
+        payment.screenshotfile = request.FILES.get('screenshotfile',None)
+        payment.save()
         return redirect('myapp:givehelp') # HttpResponseRedirect(reverse('myapp.views.list'))
+
+    def payments_to_be_done(self,unpaid_node, stage):
+        # if recieve amount greater than 4200,
+        # pay 5th stage ie(1220rs)
+        # 3240 = 1300+720(pmf)+800+420(pmf)
+        
+        
+        paid = unpaid_node.user.total_give_help + unpaid_node.user.total_pmf
+        print(paid,unpaid_node.user.first_name)
+        payments_required = {3240:[4200,5]}#{5:[3240,4200],}
+        if unpaid_node.user.total_received_help > payments_required[paid][0]:
+            
+            if paid < payments_required[stage][0]:
+                return False
+        return True
 
     def get_last_ancestor_paid(self, unpaid_node, no_of_ancestors):
         """
@@ -89,7 +121,8 @@ class GiveHelp(View):
             # last node is the unpaidnode_ancestor
             above_node= unpaid_node_ancestors[no_of_ancestors-1]
             if above_node.user in payment_done_users:
-                return True
+                # return True
+                return self.payments_to_be_done(unpaid_node, no_of_ancestors)
             else:
                 return False
         else:
@@ -102,11 +135,13 @@ class GiveHelp(View):
             # check root node in payment_done_users
             print(root_node.user, payment_done_users)
             if root_node.user in payment_done_users:
-                return True
+                # return True
+                return self.payments_to_be_done(unpaid_node, no_of_ancestors)
+            
             return False
 
     def get(self, request):
-        
+        self.user = request.user
         mynode = BinaryTree.objects.get(pk=request.user.username)
         ancestors = givehelp_ancestors(mynode)
 
@@ -119,6 +154,7 @@ class GiveHelp(View):
         
         return render(request,'myapp/givehelp.html',{
             'amts': GIVE_AMOUNTS, 
+            'pmfs':PMF,
             'is_last_ancestor_paid': is_last_ancestor_paid,
             'ancestors':ancestors
             })
