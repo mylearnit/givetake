@@ -94,8 +94,8 @@ class UserView(SuperAdminRequiredMixin,View):
             'sel_user': User.objects.get(username=username),
             'ancestors':ancestors
             })
-
-    def post(self,request, username):
+    
+    def update_payment(self,request,username):
         """Change payment status"""
         
         # from_user = User.objects.get(username = request.POST.get('from_user'))
@@ -112,6 +112,22 @@ class UserView(SuperAdminRequiredMixin,View):
             node.user.save()
             to_user.total_received_help += amt
             to_user.save()
-        messages.success(request, 'Success: Changed payment status.')
+        messages.success(request, 'Success: updated payment status.')
+
+    def update_user(self,request,username):
+        user = User.objects.get(username = username)
+        user.mobile = request.POST.get('mobile')
+        user.gpay = request.POST.get('gpay')
+        user.email = request.POST.get('email')
+        user.save()
+        messages.success(request, 'Success: updated user details.')
+
+    def post(self,request, username):
+        request_type = request.POST.get('request_type')
+        if request_type == 'update_payment':
+            self.update_payment(request, username)
+        elif request_type == 'update_user':
+            self.update_user(request, username)
+        
         return redirect(f"{reverse('adminapp:user', kwargs={'username': username})}")
 

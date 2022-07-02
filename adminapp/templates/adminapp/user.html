@@ -1,8 +1,21 @@
 {% extends 'adminapp/base.html' %}
 {% load mytags %}
 {% block extra_content %}<br>
-<p class="lead">#{{sel_user.username}} {{sel_user.first_name}}</p>
-
+<div class="row">
+<div class="alert alert-secondary col-md-4">
+  <p class="lead">#{{sel_user.username}} {{sel_user.first_name}}</p>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Mobile: <strong>{{sel_user.mobile}}</strong></li>
+    <li class="list-group-item">Email: <strong>{{sel_user.email}}</strong></li>
+    <li class="list-group-item">Google Pay: <strong>{{sel_user.gpay}}</strong></li>
+    <li class="list-group-item">Total Give Help: <strong>{{sel_user.total_give_help}}</strong></li>
+    <li class="list-group-item">Total PMF: <strong>{{sel_user.total_pmf}}</strong></li>
+    <li class="list-group-item">Total Received Help: <strong>{{sel_user.total_received_help}}</strong></li>
+  </ul><br>
+  <a class="btn btn-primary" href="javascript:void(0)" data-bs-parent="a parent" data-bs-toggle="modal" 
+data-bs-target="#categoryModal">Edit User</a>
+</div>
+</div>
 <hr>
 <div class="row">
     {% for ancestor in ancestors %}
@@ -18,7 +31,8 @@
           <p class="card-text">Status: {% if sel_user|paid_to:ancestor %}Paid{% else %}Un Paid{% endif %}</p>
           
             {% if not sel_user|paid_to:ancestor %}
-            <form method="post" action="{% url 'adminapp:user' sel_user.username%}">{% csrf_token %}
+            <form method="post" action="{% url 'adminapp:user' sel_user.username %}">{% csrf_token %}
+              <input type="hidden" name="request_type" value="update_payment">
               <input type="hidden" name="paid_to" value="{{ancestor.user.username}}">
               <input type="hidden" name="amount" value="{{ amts|index:forloop.counter0 }}">
               <input type="hidden" name="pmf" value="{{ pmfs|index:forloop.counter0 }}">
@@ -32,6 +46,46 @@
     {% endfor %}
 </div>
 
-{% endblock %}
 
+
+
+<!-- MODEL TO ADD A NODE -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+      <form method="post" action="{% url 'adminapp:user' sel_user.username %}"> {% csrf_token %}
+      <div class="modal-header">
+          <h5 class="modal-title" id="categoryModalLabel">Update user details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="request_type" value="update_user">
+<!--       
+        <div class="mb-3">
+            <label for="message-text" class="col-form-label">User Name:</label>
+            <input class="form-control" id="cat-name" name="name" required>
+        </div> -->
+        <div class="mb-3">
+          <label for="message-text" class="col-form-label">User Mobile:</label>
+          <input class="form-control" id="cat-mobile" name="mobile" value="{{sel_user.mobile}}" required>
+        </div>
+        <div class="mb-3">
+          <label for="message-text" class="col-form-label">User Google Pay:</label>
+          <input class="form-control" id="cat-gpay" name="gpay" value="{{sel_user.gpay}}" required>
+        </div>
+        <div class="mb-3">
+          <label for="message-text" class="col-form-label">User Email:</label>
+          <input class="form-control" id="cat-email" name="email" value="{{sel_user.email}}">
+        </div>
+    
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+      </div>
+  </div>
+  </div>
+{% endblock %}
 
