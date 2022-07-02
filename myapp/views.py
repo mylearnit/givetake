@@ -99,13 +99,13 @@ class GiveHelp(View):
         # 3240 = 1300+720(pmf)+800+420(pmf)
         
         
-        paid = unpaid_node.user.total_give_help + unpaid_node.user.total_pmf
-        print(paid,unpaid_node.user.first_name)
-        payments_required = {3240:[4200,5]}#{5:[3240,4200],}
-        if unpaid_node.user.total_received_help > payments_required[paid][0]:
+        # paid = unpaid_node.user.total_give_help + unpaid_node.user.total_pmf
+        # print(paid,unpaid_node.user.first_name)
+        # payments_required = {3240:[4200,5]}
+        # if unpaid_node.user.total_received_help > payments_required[paid][0]:
             
-            if paid < payments_required[stage][0]:
-                return False
+        #     if paid < payments_required[stage][0]:
+        #         return False
         return True
 
     def get_last_ancestor_paid(self, unpaid_node, no_of_ancestors):
