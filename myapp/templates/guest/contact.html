@@ -1,0 +1,34 @@
+
+{% extends 'guest/base.html' %}
+
+
+{% block body %}
+
+<!-- Map-->
+<style>
+    .map {
+  height: 30rem;
+}
+.map iframe {
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  border: 0;
+}
+
+@media (max-width: 992px) {
+  .map {
+    height: 75%;
+  }
+}
+</style>
+<div class="map">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15677.756596675332!2d76.6560269!3d10.7776387!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x6a88765e8941a3f6!2sMa%20Dayanitha%20Foundation!5e0!3m2!1sen!2sin!4v1658035883090!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<!--
+    <iframe src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
+     https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe> -->
+    <br />
+    <small><a href="https://www.google.com/maps/place/Ma+Dayanitha+Foundation/@10.7776387,76.6560269,15z/data=!4m5!3m4!1s0x0:0x6a88765e8941a3f6!8m2!3d10.7776387!4d76.6560269""></a></small>
+        <!-- https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a></small> -->
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.98.0">
+        <title>MDF CARE</title>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="{% static 'bootstrap5/guest_theme.css' %}">
+        
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div class="container px-5">
+                <a class="navbar-brand" href="#page-top">MDF CARE</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url 'myapp:contact' %}">Contact</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url 'myapp:faq' %}">FAQ</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url 'myapp:legal' %}">Legal</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url 'myapp:tandc' %}">T&C</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Register</a>
+                          </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        {% block header %}
+        <!-- Header-->
+        <header class="masthead text-center text-white">
+            <div class="masthead-content">
+                <div class="container px-5">
+                    <h1 class="masthead-heading mb-0">MDF CARE</h1>
+
+                    <h2 class="masthead-subheading mb-0">Online  helping platform</h2>
+                    <p>trust  - work together - advance together</p>
+                    {% block btn %}{% endblock %}
+                </div>
+            </div>
+            <div class="bg-circle-1 bg-circle"></div>
+            <div class="bg-circle-2 bg-circle"></div>
+            <div class="bg-circle-3 bg-circle"></div>
+            <div class="bg-circle-4 bg-circle"></div>
+        </header>
+        {% endblock %}
+
+        {% block body %}
+        {% endblock %}
+    </body>
+    </html>

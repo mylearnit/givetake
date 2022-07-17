@@ -1,0 +1,20 @@
+
+{% extends 'guest/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container px-5">
+    <br>
+    <h2>Legal</h2>
+    <table class="table table-bordered">
+        <tr><td>Trust Name</td><td>MA DAYANITHA FOUNDATION</td></tr>
+        <tr><td>Office Address</td><td>1A, 2nd floor, K.K.Building,<br> Muncipal Stand, Palakkad, 580001</td></tr>
+        <tr><td>PAN CARD</td><td>AAGTM4298J</td></tr>
+        <tr><td>Website</td><td>mdfcare.com</td></tr>
+    </table>
+
+    <img class="img-fluid" width="300px" src="{% static 'pancard.jpg' %}" alt="..." />
+    <img class="img-fluid" width="300px" src="{% static 'certificate.jpg' %}" alt="..." />
+	
+</div>
+{% endblock %}

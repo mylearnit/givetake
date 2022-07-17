@@ -41,7 +41,8 @@ def home(request):
         
     elif request.user.is_authenticated:
         return redirect('myapp:dashboard')
-    return redirect('login')
+    # return redirect('login')
+    return render(request, 'guest/home.html')
 
 @method_decorator([login_required], name='dispatch')
 class Dashboard(View):
