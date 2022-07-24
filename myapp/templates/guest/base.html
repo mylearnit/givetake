@@ -8,6 +8,7 @@
         <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
         <meta name="generator" content="Hugo 0.98.0">
         <title>MDF CARE</title>
+        <link rel="icon" href="{% static 'img/favicon.png' %}">
         <!-- Core theme CSS (includes Bootstrap)-->
         <link rel="stylesheet" href="{% static 'bootstrap5/guest_theme.css' %}">
         
@@ -64,8 +65,10 @@
             <div class="bg-circle-4 bg-circle"></div>
         </header>
         {% endblock %}
-
+       
         {% block body %}
         {% endblock %}
+        <!-- Bootstrap core JS-->
+        <script src="{% static 'bootstrap5/bootstrap.bundle.min.js' %}"></script>
     </body>
     </html>
